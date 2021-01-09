@@ -1,5 +1,4 @@
 import * as React from 'react';
-//import { Dropdown, IDropdownOption, IDropdownStyles } from 'office-ui-fabric-react/lib/Dropdown';
 import { Dropdown, IDropdownOption, IDropdownStyles } from '@fluentui/react/lib/Dropdown';
 import * as operations from './operations';
 import { EntityReference, Setting, DropDownData } from "./interface";
@@ -12,7 +11,7 @@ export const NNDropdownControl: React.FC<{ context: ComponentFramework.Context<I
 
   console.log("In render Control", setting, dropdowndata);
 
-  let targetRef: EntityReference = { entityType: setting.primaryEntityName, id: setting.primaryEntityId }; //operations.setting.primaryEntityName
+  let targetRef: EntityReference = { entityType: setting.primaryEntityName, id: setting.primaryEntityId }; 
 
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
@@ -27,7 +26,7 @@ export const NNDropdownControl: React.FC<{ context: ComponentFramework.Context<I
       if (item.selected === true) {
         operations._writeLog('Associate this item', item);
         let relatedRef: EntityReference = { entityType: setting.targetEntityName, id: item.key.toString() };
-        operations._associateRecord(context, setting, targetRef, relatedRef); //operations.globals.context
+        operations._associateRecord(context, setting, targetRef, relatedRef); 
       }
       else if (item.selected === false) {
         operations._writeLog('Disassocatie this item', item);
@@ -40,7 +39,7 @@ export const NNDropdownControl: React.FC<{ context: ComponentFramework.Context<I
   return (
     <Dropdown
       placeholder="---" //Equal to PowerPlatformStandard  //Select options 
-      //label="Multi-select controlled example"
+      //label="Multi-select controlled example" // No using a label, Power Platform Provides Label
       //selectedKeys={selectedKeys}     
       //@ts-ignore
       onChange={onChange}

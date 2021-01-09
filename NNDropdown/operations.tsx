@@ -7,9 +7,7 @@ import * as dropdown from './fluentUIDropdown';
 
 export let globals: Globals;
 
-export async function _sleep(ms: number) {
-  //Description: Sleep asynchronously for x milliseconds
-  //Ussage: await sleep(2000);		
+export async function _sleep(ms: number) {	
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -20,8 +18,8 @@ export function _writeLog(message: string, data?: any) {
 }
 
 export async function _getAvailableOptions(context: ComponentFramework.Context<IInputs>, setting: Setting) {
-  const baseFetchXml = `<fetch><entity name='${setting.targetEntityName}' /></fetch>`;
-  const userFetchXml = setting.targetEntityFilter ? setting.targetEntityFilter.replace(/"/g, "'") : "";
+  const baseFetchXml = `<fetch><entity name="${setting.targetEntityName}" /></fetch>`;
+  const userFetchXml = setting.targetEntityFilter ? setting.targetEntityFilter : "";  
   const fetchXml = userFetchXml != "" ? userFetchXml : baseFetchXml;
   _writeLog("Using this FetchXML for all available options", fetchXml);
 
@@ -39,15 +37,14 @@ export async function _getAvailableOptions(context: ComponentFramework.Context<I
 }
 
 export async function _currentOptions(context: ComponentFramework.Context<IInputs>, setting: Setting) {
-  var fetchXml = [
-    "<fetch>",
-    "  <entity name='", setting.relationShipEntityName, "'>",
-    "    <filter>",
-    "      <condition attribute='", `${setting.primaryEntityName}id`, "' operator='eq' value='", setting.primaryEntityId, "'/>",
-    "    </filter>",
-    "  </entity>",
-    "</fetch>",
-  ].join("");
+  const fetchXml: String =
+    `<fetch>
+      <entity name="${setting.relationShipEntityName}" >
+        <filter>
+          <condition attribute="${setting.primaryEntityName}id" operator="eq" value="${setting.primaryEntityId}" />
+        </filter>
+      </entity>
+    </fetch>`;
 
   _writeLog("Using this FetchXML for all selected options", fetchXml);
 
@@ -57,7 +54,7 @@ export async function _currentOptions(context: ComponentFramework.Context<IInput
   let currentOptions: Array<string> = new Array;
 
   currentOptionsSet.entities.forEach(entity => {
-    currentOptions.push(entity.be_referencedataid);
+    currentOptions.push(entity[`${setting.targetEntityName}id`]);
   });
 
   return currentOptions;

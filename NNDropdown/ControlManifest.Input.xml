@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Controls" constructor="NNDropdown" version="0.0.85" display-name-key="NNDropdown" description-key="NN Relation converted into a Multiselect Dropdown" control-type="standard">
+  <control namespace="Controls" constructor="NNDropdown" version="0.0.90" display-name-key="NNDropdown" description-key="NN Relation converted into a Multiselect Dropdown" control-type="standard">
     <!--external-service-usage node declares whether this 3rd party PCF control is using external service or not, if yes, this control will be considered as premium and please also add the external domain it is using.
     If it is not using any external service, please set the enabled="false" and DO NOT add any domain below. The "enabled" will be true by default.
     Example1:
@@ -21,8 +21,8 @@
     <property name="primarycontrol" display-name-key="primarycontrol" description-key="primarycontrol" of-type="SingleLine.Text" usage="bound" required="true" />
     <property name="relationshipname" display-name-key="RelationshipName" description-key="Name of the Relationship" of-type="SingleLine.Text" usage="input" required="true" />
     <property name="relationshipentityname" display-name-key="RelationshipEntityName" description-key="Name of the RelationshipEntityName" of-type="SingleLine.Text" usage="input" required="true" />
-    <property name="primaryfieldname" display-name-key="PrimaryFieldName" description-key="Data to be displayed in dropdown" of-type="SingleLine.Text" usage="input" required="true" />    
     <property name="targetentityname" display-name-key="TargetEntityName" description-key="Data pulled from this entity" of-type="SingleLine.Text" usage="input" required="true" />    
+    <property name="primaryfieldname" display-name-key="PrimaryFieldName" description-key="Data to be displayed in dropdown" of-type="SingleLine.Text" usage="input" required="true" />    
     <property name="enableLogging" display-name-key="EnableLogging" description-key="Enter True or False" of-type="SingleLine.Text" usage="input" required="true" />
     <property name="targetentityfilter" display-name-key="TargetEntityFilter" description-key="FetchXML Filter on the targeted entity" of-type="Multiple" usage="input" required="false" />
     <!-- 
