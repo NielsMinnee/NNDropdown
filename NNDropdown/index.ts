@@ -40,6 +40,7 @@ export class NNDropdown implements ComponentFramework.StandardControl<IInputs, I
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		// Add code to update control view
 		console.log('updateView Context', context);
+		operations._execute(this._context, this._container);
 	}
 
 	/** 

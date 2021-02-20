@@ -6,8 +6,9 @@ import React = require("react");
 import * as dropdown from './fluentUIDropdown';
 
 export let globals: Globals;
+export let setting: Setting;
 
-export async function _sleep(ms: number) {	
+export async function _sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -19,11 +20,11 @@ export function _writeLog(message: string, data?: any) {
 
 export async function _getAvailableOptions(context: ComponentFramework.Context<IInputs>, setting: Setting) {
   const baseFetchXml = `<fetch><entity name="${setting.targetEntityName}" /></fetch>`;
-  const userFetchXml = setting.targetEntityFilter ? setting.targetEntityFilter : "";  
+  const userFetchXml = setting.targetEntityFilter ? setting.targetEntityFilter : "";
   const fetchXml = userFetchXml != "" ? userFetchXml : baseFetchXml;
   _writeLog("Using this FetchXML for all available options", fetchXml);
 
-  const allOptionsSet = await webAPIHelper.retrieveDataFetchXML(context, setting.targetEntityName, `?fetchXml=${fetchXml}`);
+  const allOptionsSet = await webAPIHelper.retrieveDataFetchXML(context, setting.targetEntityName, fetchXml);
   _writeLog("Retrieved Data RAW allOptionsSet", allOptionsSet);
 
   let allOptions: Array<DropDownOption> = new Array;
@@ -37,7 +38,7 @@ export async function _getAvailableOptions(context: ComponentFramework.Context<I
 }
 
 export async function _currentOptions(context: ComponentFramework.Context<IInputs>, setting: Setting) {
-  const fetchXml: String =
+  const fetchXml: string =
     `<fetch>
       <entity name="${setting.relationShipEntityName}" >
         <filter>
@@ -48,7 +49,7 @@ export async function _currentOptions(context: ComponentFramework.Context<IInput
 
   _writeLog("Using this FetchXML for all selected options", fetchXml);
 
-  const currentOptionsSet = await webAPIHelper.retrieveDataFetchXML(context, setting.relationShipEntityName, `?fetchXml=${fetchXml}`);
+  const currentOptionsSet = await webAPIHelper.retrieveDataFetchXML(context, setting.relationShipEntityName, fetchXml);
   _writeLog("Retrieved Data RAW currentOptionsSet", currentOptionsSet);
 
   let currentOptions: Array<string> = new Array;
@@ -152,17 +153,23 @@ export async function _execute(context: ComponentFramework.Context<IInputs>, con
   globals = _processGlobals(context);
   _writeLog("Retrieved and Set Globals", globals);
 
-  const setting: Setting = _proccessSetting(context);
+  setting = _proccessSetting(context);
   _writeLog("Retrieved Settings", setting);
 
-  const dropDownData: DropDownData = {
-    allOptions: await _getAvailableOptions(context, setting),
-    selectedOptions: await _currentOptions(context, setting),
-  }
-  _writeLog("Retrieved DropdownData", dropDownData);
+  if (setting.primaryEntityId) {
 
-  ReactDOM.render(
-    React.createElement(dropdown.NNDropdownControl, { context: context, setting: setting, dropdowndata: dropDownData })
-    , container
-  );
+    const dropDownData: DropDownData = {
+      allOptions: await _getAvailableOptions(context, setting),
+      selectedOptions: await _currentOptions(context, setting),
+    }
+
+    _writeLog("Retrieved DropdownData", dropDownData);
+
+    ReactDOM.render(React.createElement(dropdown.NNDropdownControl, { context: context, setting: setting, dropdowndata: dropDownData }), container);
+  }
+  else {
+    const msg = <div>This record hasn't been created yet. To enable this control, create the record.</div>;
+    ReactDOM.render(msg, container);
+  }
+
 }
