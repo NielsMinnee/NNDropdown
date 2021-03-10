@@ -5,15 +5,12 @@ import ReactDOM = require("react-dom");
 import React = require("react");
 import * as dropdown from './fluentUIDropdown';
 
-export let globals: Globals;
-export let setting: Setting;
-
 export async function _sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export function _writeLog(message: string, data?: any) {
-  if (globals.enableLogging) {
+  if (true) { //Needs to be set back to a shared value. Had issue when the control was on the form multiple times. Settings/Globals were mixed.
     console.log(message, data);
   }
 }
@@ -150,22 +147,22 @@ export function _disAssociateRecord(context: ComponentFramework.Context<IInputs>
 
 export async function _execute(context: ComponentFramework.Context<IInputs>, container: HTMLDivElement) {
 
-  globals = _processGlobals(context);
-  _writeLog("Retrieved and Set Globals", globals);
+  const _globals = _processGlobals(context);
+  _writeLog("Retrieved and Set Globals", _globals);
 
-  setting = _proccessSetting(context);
-  _writeLog("Retrieved Settings", setting);
+  const _setting = _proccessSetting(context);
+  _writeLog("Retrieved Settings", _setting);
 
-  if (setting.primaryEntityId) {
+  if (_setting.primaryEntityId) {
 
     const dropDownData: DropDownData = {
-      allOptions: await _getAvailableOptions(context, setting),
-      selectedOptions: await _currentOptions(context, setting),
+      allOptions: await _getAvailableOptions(context, _setting),
+      selectedOptions: await _currentOptions(context, _setting),
     }
 
     _writeLog("Retrieved DropdownData", dropDownData);
 
-    ReactDOM.render(React.createElement(dropdown.NNDropdownControl, { context: context, setting: setting, dropdowndata: dropDownData }), container);
+    ReactDOM.render(React.createElement(dropdown.NNDropdownControl, { context: context, setting: _setting, dropdowndata: dropDownData }), container);
   }
   else {
     const msg = <div>This record hasn't been created yet. To enable this control, create the record.</div>;

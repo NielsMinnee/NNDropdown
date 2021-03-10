@@ -10,17 +10,17 @@
     "build-prod": "pcf-scripts build --buildMode production"
   },
   "dependencies": {
-    "@fluentui/react": "^7.161.0",
-    "@types/node": "^10.17.54",
+    "@fluentui/react": "^7.164.0",
+    "@types/node": "^10.17.55",
     "@types/powerapps-component-framework": "^1.2.0",
-    "@types/react": "^17.0.2",
+    "@types/react": "^17.0.3",
     "document-register-element": "^1.14.10",
-    "multiselect-react-dropdown": "^1.6.7",
+    "multiselect-react-dropdown": "^1.6.11",
     "ng-multiselect-dropdown": "^0.2.14",
     "react": "^17.0.1"
   },
   "devDependencies": {
-    "pcf-scripts": "^1.5.3",
-    "pcf-start": "^1.5.3"
+    "pcf-scripts": "^1.5.5",
+    "pcf-start": "^1.5.5"
   }
 }
