@@ -31,6 +31,8 @@ export async function _getAvailableOptions(context: ComponentFramework.Context<I
     allOptions.push(item);
   });
 
+  allOptions.sort((a,b) => (a.text > b.text) ? 1 : ((b.text > a.text) ? -1 : 0))
+
   return allOptions;
 }
 
