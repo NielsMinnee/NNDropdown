@@ -13,6 +13,7 @@ export interface Setting {
     relationShipEntityName : string;
     targetEntityName: string;    
     targetEntityFilter: string; 
+    isSelfReference : boolean;
 }
 
 export interface EntityReference {

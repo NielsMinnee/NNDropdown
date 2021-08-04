@@ -40,8 +40,9 @@ export async function _currentOptions(context: ComponentFramework.Context<IInput
   const fetchXml: string =
     `<fetch>
       <entity name="${setting.relationShipEntityName}" >
-        <filter>
-          <condition attribute="${setting.primaryEntityName}id" operator="eq" value="${setting.primaryEntityId}" />
+        <filter type="or">
+          <condition attribute="${setting.primaryEntityName}id${setting.isSelfReference?"one":""}" operator="eq" value="${setting.primaryEntityId}" />
+          ${setting.isSelfReference?`<condition attribute="${setting.primaryEntityName}idtwo" operator="eq" value="${setting.primaryEntityId}" />`:""}
         </filter>
       </entity>
     </fetch>`;
@@ -54,7 +55,20 @@ export async function _currentOptions(context: ComponentFramework.Context<IInput
   let currentOptions: Array<string> = new Array;
 
   currentOptionsSet.entities.forEach(entity => {
-    currentOptions.push(entity[`${setting.targetEntityName}id`]);
+    if (setting.isSelfReference) {
+      if (entity[`${setting.targetEntityName}idone`] 
+          // If entity1 is not the current record
+          && (entity[`${setting.targetEntityName}idone`] !== setting.primaryEntityId 
+          // or if both entity1 and entity2 are the current record (record linked to itself)
+          || (entity[`${setting.targetEntityName}idone`] === setting.primaryEntityId && entity[`${setting.targetEntityName}idtwo`] === setting.primaryEntityId))) 
+        currentOptions.push(entity[`${setting.targetEntityName}idone`]);
+
+        // If entity2 is not the current record
+      else if (entity[`${setting.targetEntityName}idtwo`] && entity[`${setting.targetEntityName}idtwo`] !== setting.primaryEntityId)
+        currentOptions.push(entity[`${setting.targetEntityName}idtwo`]);
+
+    } else if (entity[`${setting.targetEntityName}id`])
+      currentOptions.push(entity[`${setting.targetEntityName}id`]);
   });
 
   return currentOptions;
@@ -71,6 +85,8 @@ export function _proccessSetting(context: ComponentFramework.Context<IInputs>) {
     relationShipEntityName: context.parameters.relationshipentityname.raw ? context.parameters.relationshipentityname.raw : "",
     targetEntityName: context.parameters.targetentityname.raw ? context.parameters.targetentityname.raw : "",
     targetEntityFilter: context.parameters.targetentityfilter.raw ? context.parameters.targetentityfilter.raw : "",
+    // Relationship structure is different when entity refers back to itself
+    isSelfReference: (context as any).page.entityTypeName === context.parameters.targetentityname.raw,
   }
   return setting;
 }
