@@ -1,8 +1,8 @@
 import { IInputs } from "./generated/ManifestTypes";
 import * as webAPIHelper from "./webAPIHelper";
 import { EntityReference, Setting, DropDownOption, DropDownData, Globals } from "./interface";
-import ReactDOM = require("react-dom");
-import React = require("react");
+import * as ReactDOM from 'react-dom';
+import * as React from 'react'
 import * as dropdown from './fluentUIDropdown';
 
 export async function _sleep(ms: number) {
@@ -10,7 +10,8 @@ export async function _sleep(ms: number) {
 }
 
 export function _writeLog(message: string, data?: any) {
-  if (true) { //Needs to be set back to a shared value. Had issue when the control was on the form multiple times. Settings/Globals were mixed.
+  const condition = true;
+  if (condition) { //Needs to be set back to a shared value. Had issue when the control was on the form multiple times. Settings/Globals were mixed.
     console.log(message, data);
   }
 }
@@ -167,8 +168,8 @@ export async function _execute(context: ComponentFramework.Context<IInputs>, con
     ReactDOM.render(React.createElement(dropdown.NNDropdownControl, { context: context, setting: _setting, dropdowndata: dropDownData }), container);
   }
   else {
+    //@ts-ignore
     const msg = <div>This record hasn't been created yet. To enable this control, create the record.</div>;
     ReactDOM.render(msg, container);
   }
-
 }

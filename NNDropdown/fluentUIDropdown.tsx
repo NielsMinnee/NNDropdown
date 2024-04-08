@@ -4,8 +4,9 @@ import * as operations from './operations';
 import { EntityReference, Setting, DropDownData } from "./interface";
 import { IInputs } from './generated/ManifestTypes';
 import { useState } from 'react';
+import { inputProperties } from '@fluentui/react';
 
-const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { } }; //width: 300
+const dropdownStyles: Partial<IDropdownStyles> = { title: { border: 'none', backgroundColor: '#F5F5F5' }};
 
 export const NNDropdownControl: React.FC<{ context: ComponentFramework.Context<IInputs>, setting: Setting, dropdowndata: DropDownData }> = ({ context, setting, dropdowndata }) => {
 
@@ -46,7 +47,8 @@ export const NNDropdownControl: React.FC<{ context: ComponentFramework.Context<I
       multiSelect
       defaultSelectedKeys={dropdowndata.selectedOptions} //selectedOptions  
       options={dropdowndata.allOptions} //allOptions 
-      styles={dropdownStyles}
+      styles={dropdownStyles} 
+      disabled={context.mode.isControlDisabled}
     />
   );
 };

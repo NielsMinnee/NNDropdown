@@ -1,4 +1,4 @@
-import ReactDOM = require("react-dom");
+import * as ReactDOM from 'react-dom'
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import * as operations from './operations';
 
